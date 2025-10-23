@@ -9,11 +9,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-
+import android.content.Intent;
+import android.widget.AdapterView;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     // Declare the variables so that you will be able to reference it later.
+    public static final String extraCityName = "extraCityName";
+
     ListView cityList;
     EditText newName;
     LinearLayout nameField;
@@ -36,8 +39,7 @@ public class MainActivity extends AppCompatActivity {
 
         //dataList.addAll(Arrays.asList(cities));
 
-        cityAdapter = new ArrayAdapter<>(this, R.layout.content, dataList);
-
+        cityAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, dataList);
 
         cityList.setAdapter(cityAdapter);
 
@@ -58,11 +60,19 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
         final Button deleteButton = findViewById(R.id.button_clear);
         deleteButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 cityAdapter.clear();
             }
+        });
+
+        cityList.setOnItemClickListener((parent, view, position, id) -> {
+            String city = (String) parent.getItemAtPosition(position);
+            Intent intent = new Intent(MainActivity.this, ShowActivity.class);
+            intent.putExtra(extraCityName, city);
+            startActivity(intent);
         });
     }
 }
